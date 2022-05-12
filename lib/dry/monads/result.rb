@@ -132,6 +132,10 @@ module Dry
           f.(success)
         end
 
+        def unwrap_or_raise!
+          success
+        end
+
         # @return [String]
         def to_s
           if Unit.equal?(@value)
@@ -297,6 +301,12 @@ module Dry
         # @return [Any] Return value of `g`
         def either(_, g)
           g.(failure)
+        end
+
+        def unwrap_or_raise!
+          error = StandardError.new(failure)
+          error.set_backtrace(trace)
+          raise error
         end
 
         # Lifts a block/proc over Failure
