@@ -81,7 +81,7 @@ RSpec.describe(Dry::Monads::Task) do
 
     it "tracks the caller" do
       error = task { 1 / 0 }.to_result
-      expect(error.trace).to include("spec/unit/task_spec.rb")
+      expect(error.trace).to include(%r{spec/unit/task_spec.rb})
     end
   end
 
@@ -97,7 +97,7 @@ RSpec.describe(Dry::Monads::Task) do
 
     it "tracks the caller" do
       error = task { 1 / 0 }.to_maybe
-      expect(error.trace).to include("spec/unit/task_spec.rb")
+      expect(error.trace).to include(%r{spec/unit/task_spec.rb})
     end
   end
 

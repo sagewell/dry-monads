@@ -131,7 +131,7 @@ RSpec.describe(Dry::Monads) do
       end
 
       it "traces the caller" do
-        expect(m.Invalid(1).trace).to include("monads_spec.rb")
+        expect(m.Invalid(1).trace).to include(%r{monads_spec.rb})
       end
     end
   end

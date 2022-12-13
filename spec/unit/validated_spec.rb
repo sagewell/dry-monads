@@ -127,7 +127,7 @@ RSpec.describe(Dry::Monads::Validated) do
       end
 
       it "traces the caller" do
-        expect(subject.alt_map { |x| x }.trace).to include("validated_spec.rb")
+        expect(subject.alt_map { |x| x }.trace).to include(%r{validated_spec.rb})
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe(Dry::Monads::Validated) do
       end
 
       it "traces the caller" do
-        expect(subject.to_maybe.trace).to include("spec/unit/validated_spec.rb")
+        expect(subject.to_maybe.trace).to include(%r{spec/unit/validated_spec.rb})
       end
     end
 
@@ -166,7 +166,7 @@ RSpec.describe(Dry::Monads::Validated) do
       end
 
       it "traces the caller" do
-        expect(subject.to_result.trace).to include("spec/unit/validated_spec.rb")
+        expect(subject.to_result.trace).to include(%r{spec/unit/validated_spec.rb})
       end
     end
 
