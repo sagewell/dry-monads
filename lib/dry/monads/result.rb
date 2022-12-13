@@ -303,8 +303,8 @@ module Dry
           g.(failure)
         end
 
-        def unwrap_or_raise!
-          error = StandardError.new(failure)
+        def unwrap_or_raise!(error_class = StandardError)
+          error = error_class.new(failure)
           error.set_backtrace(trace)
           raise error
         end
