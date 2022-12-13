@@ -276,7 +276,7 @@ RSpec.describe(Dry::Monads::Try) do
       end
 
       it "tracks the caller" do
-        expect(subject.to_maybe.trace).to include("spec/unit/try_spec.rb")
+        expect(subject.to_maybe.trace).to include(%r{spec/unit/try_spec.rb})
       end
     end
 
@@ -286,7 +286,7 @@ RSpec.describe(Dry::Monads::Try) do
       end
 
       it "tracks the caller" do
-        expect(subject.to_result.trace).to include("spec/unit/try_spec.rb")
+        expect(subject.to_result.trace).to include(%r{spec/unit/try_spec.rb})
       end
     end
 

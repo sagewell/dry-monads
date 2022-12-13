@@ -326,7 +326,7 @@ RSpec.describe(Dry::Monads::Maybe) do
 
     describe "#initialize" do
       it "traces the caller" do
-        expect(subject.trace).to include("spec/unit/maybe_spec.rb")
+        expect(subject.trace).to include(%r{spec/unit/maybe_spec.rb})
       end
     end
 
@@ -542,7 +542,7 @@ RSpec.describe(Dry::Monads::Maybe) do
 
     describe "#None" do
       example "tracks the caller" do
-        expect(subject.None().trace).to include("spec/unit/maybe_spec.rb")
+        expect(subject.None().trace).to include(%r{spec/unit/maybe_spec.rb})
       end
     end
   end

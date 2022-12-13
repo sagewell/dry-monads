@@ -79,7 +79,7 @@ RSpec.describe(Dry::Monads::Result) do
 
     it "tracks the caller" do
       error = subject.Failure(:no_user)
-      expect(error.trace).to include("spec/integration/result_fixed_spec.rb")
+      expect(error.trace).to include(%r{spec/integration/result_fixed_spec.rb})
     end
 
     it "raises an error on invalid type" do

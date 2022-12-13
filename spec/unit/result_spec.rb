@@ -246,7 +246,7 @@ RSpec.describe(Dry::Monads::Result) do
       end
 
       it "tracks the caller" do
-        expect(subject.flip.trace).to include("spec/unit/result_spec.rb")
+        expect(subject.flip.trace).to include(%r{spec/unit/result_spec.rb})
       end
     end
 
@@ -456,7 +456,7 @@ RSpec.describe(Dry::Monads::Result) do
       it { is_expected.to eql(maybe::None.new) }
 
       it "tracks the caller" do
-        expect(subject.to_maybe.trace).to include("spec/unit/result_spec.rb")
+        expect(subject.to_maybe.trace).to include(%r{spec/unit/result_spec.rb})
       end
     end
 
@@ -585,7 +585,7 @@ RSpec.describe(Dry::Monads::Result) do
       end
 
       it "tracks the caller" do
-        expect(subject.Failure("fail").trace).to include("spec/unit/result_spec.rb")
+        expect(subject.Failure("fail").trace).to include(%r{spec/unit/result_spec.rb})
       end
     end
 
