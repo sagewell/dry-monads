@@ -265,6 +265,12 @@ RSpec.describe(Dry::Monads::Result) do
       end
     end
 
+    describe "#unwrap_or_raise!" do
+      it "unwraps the values" do
+        expect(subject.unwrap_or_raise!).to eql("foo")
+      end
+    end
+
     # rubocop:disable Style/CaseEquality
     describe "#===" do
       it "matches on the wrapped value" do
@@ -506,6 +512,36 @@ RSpec.describe(Dry::Monads::Result) do
         })
       end
     end
+
+    describe "#unwrap_or_raise!" do
+      it "raises the failure value as a StandardError" do
+        expect { subject.unwrap_or_raise! }.to(raise_error { |error|
+          expect(error).to be_a StandardError
+          expect(error.message).to eq('bar')
+        })
+      end
+
+      describe "with configuration" do
+        after do
+          Dry::Monads::Result.configure do |config|
+            config.before_raise = nil
+          end
+        end
+
+        it "allows configuring the error" do
+          set_failure = nil
+          Dry::Monads::Result.configure do |config|
+            config.before_raise = ->(failure) { set_failure = failure }
+          end
+          
+          expect { subject.unwrap_or_raise! }.to(raise_error { |error|
+            expect(error).to be_a StandardError
+            expect(error.message).to eq('bar')
+          })
+          expect(set_failure).to eq("bar")
+        end        
+      end
+    end    
 
     # rubocop:disable Style/CaseEquality
     describe "#===" do

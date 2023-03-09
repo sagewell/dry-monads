@@ -23,7 +23,15 @@ module Dry
       # @return [Object] Error
       attr_reader :failure
 
+      class Configuration
+        attr_accessor :before_raise
+      end
+
       class << self
+        def configuration
+          @confiuration ||= Configuration.new
+        end
+
         # Wraps the given value with Success.
         #
         # @overload pure(value)
@@ -36,6 +44,10 @@ module Dry
         #
         def pure(value = Undefined, &block)
           Success.new(Undefined.default(value, block))
+        end
+
+        def configure(&blk)
+          blk.call(configuration)
         end
       end
 
@@ -303,8 +315,12 @@ module Dry
           g.(failure)
         end
 
-        def unwrap_or_raise!(error_class = StandardError)
-          error = error_class.new(failure)
+        def unwrap_or_raise!
+          if Result.configuration.before_raise
+            Result.configuration.before_raise.call(failure)
+          end
+
+          error = StandardError.new(failure)
           error.set_backtrace(trace)
           raise error
         end
