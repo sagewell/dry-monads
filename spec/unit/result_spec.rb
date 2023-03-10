@@ -524,21 +524,31 @@ RSpec.describe(Dry::Monads::Result) do
       describe "with configuration" do
         after do
           Dry::Monads::Result.configure do |config|
-            config.before_raise = nil
+            config.error_class = nil
           end
         end
 
-        it "allows configuring the error" do
-          set_failure = nil
+        it "allows configuring the error class" do
           Dry::Monads::Result.configure do |config|
-            config.before_raise = ->(failure) { set_failure = failure }
+            config.error_class = ->(failure) do
+              case failure
+              in "bar"
+                ArgumentError
+              else
+                RuntimeError
+              end
+            end
           end
           
           expect { subject.unwrap_or_raise! }.to(raise_error { |error|
-            expect(error).to be_a StandardError
+            expect(error).to be_a ArgumentError
             expect(error.message).to eq('bar')
           })
-          expect(set_failure).to eq("bar")
+          expect { result::Failure.new("foo").to_result.unwrap_or_raise! }.to(raise_error { |error|
+            expect(error).to be_a RuntimeError
+            expect(error.message).to eq('foo')
+          })
+
         end        
       end
     end    

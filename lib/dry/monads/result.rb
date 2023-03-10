@@ -24,7 +24,7 @@ module Dry
       attr_reader :failure
 
       class Configuration
-        attr_accessor :before_raise
+        attr_accessor :error_class
       end
 
       class << self
@@ -316,11 +316,9 @@ module Dry
         end
 
         def unwrap_or_raise!
-          if Result.configuration.before_raise
-            Result.configuration.before_raise.call(failure)
-          end
+          error_class = Result.configuration.error_class&.call(failure) || StandardError
 
-          error = StandardError.new(failure)
+          error = error_class.new(failure)
           error.set_backtrace(trace)
           raise error
         end
