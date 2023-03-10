@@ -517,7 +517,7 @@ RSpec.describe(Dry::Monads::Result) do
       it "raises the failure value as a StandardError" do
         expect { subject.unwrap_or_raise! }.to(raise_error { |error|
           expect(error).to be_a StandardError
-          expect(error.message).to eq('bar')
+          expect(error.message).to eq("bar")
         })
       end
 
@@ -530,9 +530,9 @@ RSpec.describe(Dry::Monads::Result) do
 
         it "allows configuring the error class" do
           Dry::Monads::Result.configure do |config|
-            config.error_class = ->(failure) do
-              case failure
-              in "bar"
+            config.error_class = ->(failure_value) do
+              case failure_value
+              when "bar"
                 ArgumentError
               else
                 RuntimeError
@@ -542,11 +542,11 @@ RSpec.describe(Dry::Monads::Result) do
 
           expect { subject.unwrap_or_raise! }.to(raise_error { |error|
             expect(error).to be_a ArgumentError
-            expect(error.message).to eq('bar')
+            expect(error.message).to eq("bar")
           })
           expect { result::Failure.new("foo").to_result.unwrap_or_raise! }.to(raise_error { |error|
             expect(error).to be_a RuntimeError
-            expect(error.message).to eq('foo')
+            expect(error.message).to eq("foo")
           })
         end
       end
