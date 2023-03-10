@@ -539,7 +539,7 @@ RSpec.describe(Dry::Monads::Result) do
               end
             end
           end
-          
+
           expect { subject.unwrap_or_raise! }.to(raise_error { |error|
             expect(error).to be_a ArgumentError
             expect(error.message).to eq('bar')
@@ -548,10 +548,9 @@ RSpec.describe(Dry::Monads::Result) do
             expect(error).to be_a RuntimeError
             expect(error.message).to eq('foo')
           })
-
-        end        
+        end
       end
-    end    
+    end
 
     # rubocop:disable Style/CaseEquality
     describe "#===" do
